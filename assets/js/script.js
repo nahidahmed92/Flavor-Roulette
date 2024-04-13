@@ -9,14 +9,15 @@ function flavors() {
   // Select all boxes
   const boxes = document.querySelectorAll('.box');
 
-  const flavor1 = 'Trifecta Pineapple Guava';
-  const flavor2 = 'Zomo Cancun';
-  const flavor3 = 'Zomo Cancun';
-  const flavor4 = 'Zomo Cancun';
-  const flavor5 = 'Zomo Cancun';
-  const flavor6 = 'Zomo Cancun';
-  const flavor7 = 'Zomo Cancun';
-  const flavor8 = 'Zomo Cancun';
+  const flavor1 = 'Twice the Ice<br/>Pineapple Guava<br/>Caribbean Nights';
+  const flavor2 = `Lime Tea<br/>Twice the Ice<br/>Lime Spice Peach`;
+  const flavor3 = 'Lime Tea<br/>Ice Acai Raspberry';
+  const flavor4 = 'Green Mix<br/>Ice Orange';
+  const flavor5 = 'Ice Grape<br/>Aloha Nights';
+  const flavor6 = 'Nawar<br/>Aloha Nights<br/>Raspberry Lemon Roll';
+  const flavor7 = 'Pink Lemon Drop<br/>Peppermint Shake<br/>Pink Lemon Drop';
+  const flavor8 = 'P3<br/>Peppermint Shake';
+  const flavor9 = 'Nawar<br/>Blue Dragon';
 
   // Loop through each box
   boxes.forEach((box) => {
@@ -39,6 +40,8 @@ function flavors() {
       box.setAttribute('data-text', flavor7);
     } else if (number === '8') {
       box.setAttribute('data-text', flavor8);
+    } else if (number === '9') {
+      box.setAttribute('data-text', flavor9);
     }
   });
 }
@@ -62,10 +65,10 @@ container.addEventListener('click', function (event) {
       element.dataset.state = 'visible';
 
       // show the text
-      element.textContent = text;
+      element.innerHTML = text;
     } else {
       // display number
-      element.textContent = number;
+      element.textContent = '❌';
       // make it hidden
       element.dataset.state = 'hidden';
     }
