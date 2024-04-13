@@ -47,7 +47,7 @@ function flavors() {
 }
 
 // USER INTERACTION ==================================
-container.addEventListener('click', function (event) {
+container.addEventListener('dblclick', function (event) {
   const element = event.target;
 
   if (element.matches('.box')) {
