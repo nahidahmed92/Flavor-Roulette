@@ -61,8 +61,29 @@ h1 {
   font-size: 38px;
   text-align: center; /* This line is optional */
 }
+.btnContainer {
+  display: flex;
+  width: 20%;
+  margin: 25px auto;
+}
 
 .randomNumBtn {
+  margin: 0 auto;
+  display: block;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.resetBtn {
   margin: 0 auto;
   display: block;
 

@@ -2,9 +2,31 @@
 // the container that holds all of the clickable boxes
 const container = document.querySelector('.container');
 const randomBtn = document.querySelector('.randomNumBtn');
+const resetBtn = document.querySelector('.resetBtn');
 
 // DATA ==============================================
-const array = ['1', '2', '3', '4', '5', '6', '7', '8', '9'];
+// Check if the array already exists in localStorage
+const storedArray = localStorage.getItem('array');
+
+if (storedArray) {
+  // If it exists, parse it from JSON
+  array = JSON.parse(storedArray);
+} else if (storedArray === []) {
+  // Otherwise, initialize the array
+  const array = ['1', '2', '3', '4', '5', '6', '7', '8', '9'];
+  // Store the initial array in localStorage
+  localStorage.setItem('array', JSON.stringify(array));
+}
+
+// if (!storedArray) {
+//   // If it doesn't exist, initialize the array
+//   const array = ['1', '2', '3', '4', '5', '6', '7', '8', '9'];
+//   // Store the initial array in localStorage
+//   localStorage.setItem('array', JSON.stringify(array));
+// } else {
+//   // If it exists, parse it from JSON
+//   array = JSON.parse(storedArray);
+// }
 
 // FUNCTIONS =========================================
 function flavors() {
@@ -62,24 +84,108 @@ function flavors() {
 //   }
 // }
 
+// function getRandomAndRemove() {
+//   // Check if array still has elements
+//   if (array.length > 0) {
+//     const randomIndex = Math.floor(Math.random() * array.length);
+//     const randomNum = array[randomIndex];
+//     console.log(randomNum);
+//     array.splice(randomIndex, 1); // Remove the element at the random index
+
+//     // Update the array in localStorage
+//     localStorage.setItem('array', JSON.stringify(array));
+
+//     // Display the selected box
+//     const hiddenBoxes = document.querySelectorAll('.box[data-state="hidden"]');
+//     if (hiddenBoxes.length > 0) {
+//       const randomBox = hiddenBoxes[randomIndex];
+//       const text = randomBox.getAttribute('data-text');
+//       randomBox.innerHTML = text;
+//       randomBox.dataset.state = 'visible';
+//       console.log(text);
+//     } else {
+//       console.log('All boxes are visible');
+//     }
+//   } else {
+//     console.log('Array is empty');
+//   }
+// }
+
+// function getRandomAndRemove() {
+//   // Check if array still has elements
+//   if (array.length > 0) {
+//     const randomIndex = Math.floor(Math.random() * array.length);
+//     const randomNum = array[randomIndex];
+//     console.log(randomNum);
+//     array.splice(randomIndex, 1); // Remove the element at the random index
+
+//     // Update the array in localStorage
+//     localStorage.setItem('array', JSON.stringify(array));
+
+//     // Display the selected box
+//     const hiddenBoxes = document.querySelectorAll('.box[data-state="hidden"]');
+//     if (hiddenBoxes.length > 0) {
+//       let randomBox;
+//       for (let i = 0; i < hiddenBoxes.length; i++) {
+//         if (hiddenBoxes[i].textContent !== '❌') {
+//           randomBox = hiddenBoxes[i];
+//           break;
+//         }
+//       }
+//       if (randomBox) {
+//         const text = randomBox.getAttribute('data-text');
+//         randomBox.innerHTML = text;
+//         randomBox.dataset.state = 'visible';
+//         console.log(text);
+//       } else {
+//         console.log('All eligible boxes are marked with ❌');
+//       }
+//     } else {
+//       console.log('All boxes are visible');
+//     }
+//   } else {
+//     console.log('Array is empty');
+//   }
+// }
+
 function getRandomAndRemove() {
-  // Select all boxes with hidden content
-  // const hiddenBoxes = document.querySelectorAll('.box[data-state="hidden"]');
-  const hiddenBoxes = document.querySelectorAll('.box[data-state="hidden"]');
+  // Check if array still has elements
+  if (array.length > 0) {
+    const randomIndex = Math.floor(Math.random() * array.length);
+    const randomNum = array[randomIndex];
+    console.log(randomNum);
+    array.splice(randomIndex, 1); // Remove the element at the random index
 
-  // Check if there are still hidden boxes
-  if (hiddenBoxes.length > 0) {
-    const randomIndex = Math.floor(Math.random() * hiddenBoxes.length);
-    const randomBox = hiddenBoxes[randomIndex];
-    const text = randomBox.getAttribute('data-text');
+    // Update the array in localStorage
+    localStorage.setItem('array', JSON.stringify(array));
 
-    // Display the text
-    randomBox.innerHTML = text;
-    randomBox.dataset.state = 'visible';
+    // Display the selected box
+    const hiddenBoxes = document.querySelectorAll('.box[data-state="hidden"]');
+    if (hiddenBoxes.length > 0) {
+      let eligibleBoxes = [];
+      hiddenBoxes.forEach((box) => {
+        if (box.textContent !== '❌') {
+          eligibleBoxes.push(box);
+        }
+      });
 
-    console.log(text);
+      if (eligibleBoxes.length > 0) {
+        const randomBox = eligibleBoxes[Math.floor(Math.random() * eligibleBoxes.length)];
+        const text = randomBox.getAttribute('data-text');
+        randomBox.innerHTML = text;
+        randomBox.dataset.state = 'visible';
+        console.log(text);
+      } else {
+        console.log('All eligible boxes are marked with ❌');
+      }
+    } else {
+      console.log('All boxes are visible');
+    }
+
+    // Call the flavors function
+    flavors();
   } else {
-    console.log('All boxes are visible');
+    console.log('Array is empty');
   }
 }
 
@@ -113,6 +219,16 @@ container.addEventListener('dblclick', function (event) {
 });
 
 randomBtn.addEventListener('click', getRandomAndRemove);
+
+resetBtn.addEventListener('click', function () {
+  // Reset the array
+  const array = ['1', '2', '3', '4', '5', '6', '7', '8', '9'];
+  // Store the reset array in localStorage
+  localStorage.setItem('array', JSON.stringify(array));
+
+  // Optionally, you can also reload the page to reflect the changes immediately
+  location.reload();
+});
 
 // INITIALIZATION ====================================
 // load flavors to data-text attribute
