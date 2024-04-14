@@ -1,8 +1,10 @@
 // DEPENDENCIES ======================================
 // the container that holds all of the clickable boxes
 const container = document.querySelector('.container');
+const randomBtn = document.querySelector('.randomNumBtn');
 
 // DATA ==============================================
+const array = ['1', '2', '3', '4', '5', '6', '7', '8', '9'];
 
 // FUNCTIONS =========================================
 function flavors() {
@@ -46,6 +48,41 @@ function flavors() {
   });
 }
 
+// function getRandomAndRemove() {
+//   // Check if array still has elements
+//   if (array.length > 0) {
+//     const randomIndex = Math.floor(Math.random() * array.length);
+//     const randomNum = array[randomIndex];
+//     // const randomNum = array.splice(randomIndex, 1)[0];
+//     console.log(randomNum);
+//     array.splice(randomIndex, 1); // Remove the element at the random index
+//     return randomNum;
+//   } else {
+//     console.log('Array is empty');
+//   }
+// }
+
+function getRandomAndRemove() {
+  // Select all boxes with hidden content
+  // const hiddenBoxes = document.querySelectorAll('.box[data-state="hidden"]');
+  const hiddenBoxes = document.querySelectorAll('.box[data-state="hidden"]');
+
+  // Check if there are still hidden boxes
+  if (hiddenBoxes.length > 0) {
+    const randomIndex = Math.floor(Math.random() * hiddenBoxes.length);
+    const randomBox = hiddenBoxes[randomIndex];
+    const text = randomBox.getAttribute('data-text');
+
+    // Display the text
+    randomBox.innerHTML = text;
+    randomBox.dataset.state = 'visible';
+
+    console.log(text);
+  } else {
+    console.log('All boxes are visible');
+  }
+}
+
 // USER INTERACTION ==================================
 container.addEventListener('dblclick', function (event) {
   const element = event.target;
@@ -74,6 +111,8 @@ container.addEventListener('dblclick', function (event) {
     }
   }
 });
+
+randomBtn.addEventListener('click', getRandomAndRemove);
 
 // INITIALIZATION ====================================
 // load flavors to data-text attribute
