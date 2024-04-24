@@ -5,7 +5,7 @@
 }
 
 body {
-  font-family: sans-serif;
+  /* font-family: 'Pacifico', cursive; */
   background-color: #ffffe0;
 }
 
@@ -16,35 +16,19 @@ h1 {
   color: #001b44;
 }
 
-/* .container {
-  width: 80vw;
-  margin: 25px auto;
-  display: flex;
-  flex-direction: row;
-} */
-
-.container {
+.containerCard {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 2%;
   width: 80vw;
   margin: 25px auto;
 }
-/* .box {
-  display: block;
-  float: left;
-  width: 31%;
-  height: 210px;
-  margin: 1%;
-  cursor: pointer;
-  object-fit: cover;
-  border-radius: 10px;
-  background-color: #093145;
-  text-align: center;
-  align-content: center;
-  color: whitesmoke;
-  font-size: 38px;
-} */
+
+.pacifico-regular {
+  font-family: 'Pacifico', cursive;
+  font-weight: 400;
+  font-style: normal;
+}
 
 .box {
   display: flex;
@@ -60,43 +44,6 @@ h1 {
   color: whitesmoke;
   font-size: 38px;
   text-align: center; /* This line is optional */
-}
-.btnContainer {
-  display: flex;
-  width: 20%;
-  margin: 25px auto;
-}
-
-.randomNumBtn {
-  margin: 0 auto;
-  display: block;
-
-  display: flex;
-  justify-content: center;
-  align-items: center;
-
-  padding: 10px 20px;
-  background-color: #007bff;
-  color: #fff;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-}
-
-.resetBtn {
-  margin: 0 auto;
-  display: block;
-
-  display: flex;
-  justify-content: center;
-  align-items: center;
-
-  padding: 10px 20px;
-  background-color: #007bff;
-  color: #fff;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
 }
 
 @media (max-width: 740px) {
