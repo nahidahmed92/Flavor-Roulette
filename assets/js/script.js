@@ -1,35 +1,37 @@
 // DEPENDENCIES ======================================
 // the container that holds all of the clickable boxes
-const container = document.querySelector('.container');
-const randomBtn = document.querySelector('.randomNumBtn');
-const resetBtn = document.querySelector('.resetBtn');
+const container = document.querySelector('.containerCard');
+const randomBtn = document.querySelector('#randomNumBtn');
+const resetBtn = document.querySelector('#resetBtn');
+const flavorForm = document.getElementById('flavorForm');
+const flavorOne = document.getElementById('flavorOne');
+const flavorTwo = document.getElementById('flavorTwo');
+const flavorThree = document.getElementById('flavorThree');
+const flavorFour = document.getElementById('flavorFour');
 
 // DATA ==============================================
 // Check if the array already exists in localStorage
-const storedArray = localStorage.getItem('array');
+const storedArray = localStorage.getItem('array') || [];
+let array = JSON.parse(storedArray);
 
-if (storedArray) {
-  // If it exists, parse it from JSON
-  array = JSON.parse(storedArray);
-} else if (storedArray === []) {
+if (array.length === 0) {
+  console.log('no data in array');
   // Otherwise, initialize the array
   const array = ['1', '2', '3', '4', '5', '6', '7', '8', '9'];
   // Store the initial array in localStorage
   localStorage.setItem('array', JSON.stringify(array));
 }
 
-// if (!storedArray) {
-//   // If it doesn't exist, initialize the array
-//   const array = ['1', '2', '3', '4', '5', '6', '7', '8', '9'];
-//   // Store the initial array in localStorage
-//   localStorage.setItem('array', JSON.stringify(array));
-// } else {
-//   // If it exists, parse it from JSON
-//   array = JSON.parse(storedArray);
-// }
-
 // FUNCTIONS =========================================
-function flavors() {
+function flavors(event) {
+  event.preventDefault();
+  console.log('flavorOne: ', flavorOne.value);
+  if (flavorTwo.value !== '') {
+    console.log('flavorTwo: ', flavorTwo.value);
+  }
+
+  console.log('flavorThree:', flavorThree.value);
+  console.log('flavorFour:', flavorFour.value);
   // Select all boxes
   const boxes = document.querySelectorAll('.box');
 
@@ -153,7 +155,7 @@ function getRandomAndRemove() {
   if (array.length > 0) {
     const randomIndex = Math.floor(Math.random() * array.length);
     const randomNum = array[randomIndex];
-    console.log(randomNum);
+    console.log('randomNum: ', randomNum);
     array.splice(randomIndex, 1); // Remove the element at the random index
 
     // Update the array in localStorage
@@ -185,7 +187,7 @@ function getRandomAndRemove() {
     // Call the flavors function
     flavors();
   } else {
-    console.log('Array is empty');
+    alert('Array is empty');
   }
 }
 
@@ -219,7 +221,6 @@ container.addEventListener('dblclick', function (event) {
 });
 
 randomBtn.addEventListener('click', getRandomAndRemove);
-
 resetBtn.addEventListener('click', function () {
   // Reset the array
   const array = ['1', '2', '3', '4', '5', '6', '7', '8', '9'];
@@ -229,6 +230,7 @@ resetBtn.addEventListener('click', function () {
   // Optionally, you can also reload the page to reflect the changes immediately
   location.reload();
 });
+flavorForm.addEventListener('submit', flavors);
 
 // INITIALIZATION ====================================
 // load flavors to data-text attribute
