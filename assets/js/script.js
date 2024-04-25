@@ -2,6 +2,7 @@
 const container = document.querySelector('.containerCard');
 const randomBtn = document.querySelector('#randomNumBtn');
 const resetBtn = document.querySelector('#resetBtn');
+const clearBtn = document.querySelector('#clearStorage');
 const flavorForm = document.getElementById('flavorForm');
 const flavorOne = document.getElementById('flavorOne');
 const flavorTwo = document.getElementById('flavorTwo');
@@ -27,6 +28,12 @@ if (array.length === 0) {
   array = Array.from({ length: flavorMix.length }, (_, index) => (index + 1).toString());
   // Store the initial array in localStorage
   localStorage.setItem('arrayNum', JSON.stringify(array));
+}
+
+if (array.length === 0 && flavorMix.length === 0) {
+  clearBtn.style.display = 'none';
+} else {
+  clearBtn.style.display = '';
 }
 
 // FUNCTIONS =========================================
@@ -135,6 +142,14 @@ function capitalizeFirstLetter(str) {
   return str.replace(/\b\w/g, (char) => char.toUpperCase());
 }
 
+function clear(event) {
+  event.preventDefault();
+  localStorage.clear();
+  flavorMix = [];
+  array = [];
+  location.reload();
+}
+
 // Adjust font size based on text length
 // function adjustFontSize() {
 //   const boxes = document.querySelectorAll('.box');
@@ -194,6 +209,7 @@ resetBtn.addEventListener('click', function () {
 });
 
 flavorForm.addEventListener('submit', flavors);
+clearBtn.addEventListener('click', clear);
 
 // window.addEventListener('resize', adjustFontSize);
 
