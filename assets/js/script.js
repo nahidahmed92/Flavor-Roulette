@@ -3,6 +3,7 @@ const container = document.querySelector('.containerCard');
 const randomBtn = document.querySelector('#randomNumBtn');
 const resetBtn = document.querySelector('#resetBtn');
 const clearBtn = document.querySelector('#clearStorage');
+const confirmBtn = document.querySelector('#confirmMixBtn');
 const flavorForm = document.getElementById('flavorForm');
 const flavorOne = document.getElementById('flavorOne');
 const flavorTwo = document.getElementById('flavorTwo');
@@ -210,6 +211,9 @@ resetBtn.addEventListener('click', function () {
 
 flavorForm.addEventListener('submit', flavors);
 clearBtn.addEventListener('click', clear);
+confirmBtn.addEventListener('click', function () {
+  location.reload();
+});
 
 // window.addEventListener('resize', adjustFontSize);
 
