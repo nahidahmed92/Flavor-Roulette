@@ -1,5 +1,4 @@
 // DEPENDENCIES ======================================
-// the container that holds all of the clickable boxes
 const container = document.querySelector('.containerCard');
 const randomBtn = document.querySelector('#randomNumBtn');
 const resetBtn = document.querySelector('#resetBtn');
@@ -10,156 +9,97 @@ const flavorThree = document.getElementById('flavorThree');
 const flavorFour = document.getElementById('flavorFour');
 
 // DATA ==============================================
-// Check if the array already exists in localStorage
-const storedArray = localStorage.getItem('array') || [];
-let array = JSON.parse(storedArray);
+let flavorMix = JSON.parse(localStorage.getItem('arrayMix')) || [];
+
+// Initialize array to match the length of flavorMix
+let array = Array.from({ length: flavorMix.length }, (_, index) => (index + 1).toString());
+array = JSON.parse(localStorage.getItem('arrayNum')) || array;
+
+// Ensure that flavorMix is an empty array if it's null (when there's no data in localStorage)
+// if (!flavorMix) {
+//   flavorMix = [];
+// }
 
 if (array.length === 0) {
   console.log('no data in array');
   // Otherwise, initialize the array
-  const array = ['1', '2', '3', '4', '5', '6', '7', '8', '9'];
+  // Initialize the array to match the length of flavorMix
+  array = Array.from({ length: flavorMix.length }, (_, index) => (index + 1).toString());
   // Store the initial array in localStorage
-  localStorage.setItem('array', JSON.stringify(array));
+  localStorage.setItem('arrayNum', JSON.stringify(array));
 }
 
 // FUNCTIONS =========================================
 function flavors(event) {
   event.preventDefault();
-  console.log('flavorOne: ', flavorOne.value);
-  if (flavorTwo.value !== '') {
-    console.log('flavorTwo: ', flavorTwo.value);
+
+  // Create an empty mix object
+  const mix = {};
+
+  const flavor1 = flavorOne.value.trim();
+  const flavor2 = flavorTwo.value.trim();
+  const flavor3 = flavorThree.value.trim();
+  const flavor4 = flavorFour.value.trim();
+
+  // Check if each flavor is not empty, and add it to the mix object if not
+  if (flavor1 !== '') {
+    mix.flavor1 = capitalizeFirstLetter(flavorOne.value.trim());
+  }
+  if (flavor2 !== '') {
+    mix.flavor2 = capitalizeFirstLetter(flavorTwo.value.trim());
+  }
+  if (flavor3 !== '') {
+    mix.flavor3 = capitalizeFirstLetter(flavorThree.value.trim());
+  }
+  if (flavor4 !== '') {
+    mix.flavor4 = capitalizeFirstLetter(flavorFour.value.trim());
   }
 
-  console.log('flavorThree:', flavorThree.value);
-  console.log('flavorFour:', flavorFour.value);
+  // Check if the mix object is not empty, then push it to the array and store it in local storage
+  if (Object.keys(mix).length !== 0) {
+    flavorMix.push(mix);
+    localStorage.setItem('arrayMix', JSON.stringify(flavorMix));
+
+    // Update array to match the length of flavorMix
+    array = Array.from({ length: flavorMix.length }, (_, index) => (index + 1).toString());
+    localStorage.setItem('arrayNum', JSON.stringify(array));
+  }
+
+  // Reset card content
+  let cardContent = '';
+
   // Select all boxes
   const boxes = document.querySelectorAll('.box');
 
-  const flavor1 = 'Twice the Ice<br/>Pineapple Guava<br/>Caribbean Nights';
-  const flavor2 = `Lime Tea<br/>Twice the Ice<br/>Lime Spice Peach`;
-  const flavor3 = 'Lime Tea<br/>Ice Acai Raspberry';
-  const flavor4 = 'Green Mix<br/>Ice Orange';
-  const flavor5 = 'Ice Grape<br/>Aloha Nights';
-  const flavor6 = 'Nawar<br/>Aloha Nights<br/>Raspberry Lemon Roll';
-  const flavor7 = 'Pink Lemon Drop<br/>Peppermint Shake<br/>Pink Lemon Drop';
-  const flavor8 = 'P3<br/>Peppermint Shake';
-  const flavor9 = 'Nawar<br/>Blue Dragon';
+  for (let i = 0; i < flavorMix.length; i++) {
+    const mix = flavorMix[i];
+    const number = i + 1;
 
-  // Loop through each box
-  boxes.forEach((box) => {
-    const number = box.textContent;
-
-    // Set data-text based on the box number
-    if (number === '1') {
-      box.setAttribute('data-text', flavor1);
-    } else if (number === '2') {
-      box.setAttribute('data-text', flavor2);
-    } else if (number === '3') {
-      box.setAttribute('data-text', flavor3);
-    } else if (number === '4') {
-      box.setAttribute('data-text', flavor4);
-    } else if (number === '5') {
-      box.setAttribute('data-text', flavor5);
-    } else if (number === '6') {
-      box.setAttribute('data-text', flavor6);
-    } else if (number === '7') {
-      box.setAttribute('data-text', flavor7);
-    } else if (number === '8') {
-      box.setAttribute('data-text', flavor8);
-    } else if (number === '9') {
-      box.setAttribute('data-text', flavor9);
+    let dataText = '';
+    // Iterate over the keys of the mix object
+    for (const key in mix) {
+      if (mix.hasOwnProperty(key)) {
+        dataText += mix[key] + '<br/>'; // Append each flavor to dataText
+      }
     }
-  });
+    // Set the data-text attribute for the current box
+    cardContent += `<div class="box" data-number="${number}" data-state="hidden" data-text="${dataText}">${number}</div>`;
+  }
+
+  container.innerHTML = cardContent;
+  flavorForm.reset();
 }
-
-// function getRandomAndRemove() {
-//   // Check if array still has elements
-//   if (array.length > 0) {
-//     const randomIndex = Math.floor(Math.random() * array.length);
-//     const randomNum = array[randomIndex];
-//     // const randomNum = array.splice(randomIndex, 1)[0];
-//     console.log(randomNum);
-//     array.splice(randomIndex, 1); // Remove the element at the random index
-//     return randomNum;
-//   } else {
-//     console.log('Array is empty');
-//   }
-// }
-
-// function getRandomAndRemove() {
-//   // Check if array still has elements
-//   if (array.length > 0) {
-//     const randomIndex = Math.floor(Math.random() * array.length);
-//     const randomNum = array[randomIndex];
-//     console.log(randomNum);
-//     array.splice(randomIndex, 1); // Remove the element at the random index
-
-//     // Update the array in localStorage
-//     localStorage.setItem('array', JSON.stringify(array));
-
-//     // Display the selected box
-//     const hiddenBoxes = document.querySelectorAll('.box[data-state="hidden"]');
-//     if (hiddenBoxes.length > 0) {
-//       const randomBox = hiddenBoxes[randomIndex];
-//       const text = randomBox.getAttribute('data-text');
-//       randomBox.innerHTML = text;
-//       randomBox.dataset.state = 'visible';
-//       console.log(text);
-//     } else {
-//       console.log('All boxes are visible');
-//     }
-//   } else {
-//     console.log('Array is empty');
-//   }
-// }
-
-// function getRandomAndRemove() {
-//   // Check if array still has elements
-//   if (array.length > 0) {
-//     const randomIndex = Math.floor(Math.random() * array.length);
-//     const randomNum = array[randomIndex];
-//     console.log(randomNum);
-//     array.splice(randomIndex, 1); // Remove the element at the random index
-
-//     // Update the array in localStorage
-//     localStorage.setItem('array', JSON.stringify(array));
-
-//     // Display the selected box
-//     const hiddenBoxes = document.querySelectorAll('.box[data-state="hidden"]');
-//     if (hiddenBoxes.length > 0) {
-//       let randomBox;
-//       for (let i = 0; i < hiddenBoxes.length; i++) {
-//         if (hiddenBoxes[i].textContent !== '❌') {
-//           randomBox = hiddenBoxes[i];
-//           break;
-//         }
-//       }
-//       if (randomBox) {
-//         const text = randomBox.getAttribute('data-text');
-//         randomBox.innerHTML = text;
-//         randomBox.dataset.state = 'visible';
-//         console.log(text);
-//       } else {
-//         console.log('All eligible boxes are marked with ❌');
-//       }
-//     } else {
-//       console.log('All boxes are visible');
-//     }
-//   } else {
-//     console.log('Array is empty');
-//   }
-// }
 
 function getRandomAndRemove() {
   // Check if array still has elements
   if (array.length > 0) {
     const randomIndex = Math.floor(Math.random() * array.length);
     const randomNum = array[randomIndex];
-    console.log('randomNum: ', randomNum);
-    array.splice(randomIndex, 1); // Remove the element at the random index
+    // Remove the element at the random index
+    array.splice(randomIndex, 1);
 
     // Update the array in localStorage
-    localStorage.setItem('array', JSON.stringify(array));
+    localStorage.setItem('arrayNum', JSON.stringify(array));
 
     // Display the selected box
     const hiddenBoxes = document.querySelectorAll('.box[data-state="hidden"]');
@@ -176,7 +116,6 @@ function getRandomAndRemove() {
         const text = randomBox.getAttribute('data-text');
         randomBox.innerHTML = text;
         randomBox.dataset.state = 'visible';
-        console.log(text);
       } else {
         console.log('All eligible boxes are marked with ❌');
       }
@@ -187,9 +126,31 @@ function getRandomAndRemove() {
     // Call the flavors function
     flavors();
   } else {
-    alert('Array is empty');
+    alert('Make new bowls 😎');
   }
 }
+
+// Function to capitalize the first letter of each word
+function capitalizeFirstLetter(str) {
+  return str.replace(/\b\w/g, (char) => char.toUpperCase());
+}
+
+// Adjust font size based on text length
+// function adjustFontSize() {
+//   const boxes = document.querySelectorAll('.box');
+//   boxes.forEach((box) => {
+//     const textLength = box.textContent.length;
+//     const maxWidth = parseFloat(window.getComputedStyle(box).width); // Get the width of the box
+//     let fontSize = 38; // Default font size
+
+//     if (textLength > 10) {
+//       // Adjust this threshold based on your design
+//       fontSize = Math.floor((maxWidth / textLength) * 1.8); // Adjust the factor based on your design
+//     }
+
+//     box.style.fontSize = `${fontSize}px`; // Set the font size
+//   });
+// }
 
 // USER INTERACTION ==================================
 container.addEventListener('dblclick', function (event) {
@@ -221,16 +182,20 @@ container.addEventListener('dblclick', function (event) {
 });
 
 randomBtn.addEventListener('click', getRandomAndRemove);
+
 resetBtn.addEventListener('click', function () {
-  // Reset the array
-  const array = ['1', '2', '3', '4', '5', '6', '7', '8', '9'];
+  // Reset the array to match the length of flavorMix
+  const array = Array.from({ length: flavorMix.length }, (_, index) => (index + 1).toString());
   // Store the reset array in localStorage
-  localStorage.setItem('array', JSON.stringify(array));
+  localStorage.setItem('arrayNum', JSON.stringify(array));
 
   // Optionally, you can also reload the page to reflect the changes immediately
   location.reload();
 });
+
 flavorForm.addEventListener('submit', flavors);
+
+// window.addEventListener('resize', adjustFontSize);
 
 // INITIALIZATION ====================================
 // load flavors to data-text attribute
